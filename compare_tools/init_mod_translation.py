@@ -6,16 +6,16 @@ from Mod import Mod
 
 def init_mod(mod_repo_url, overwrite=False):
     mod = Mod(mod_repo_url)
-    if os.path.exists(mod.mod_path) and not overwrite:
+    if os.path.exists(mod.path) and not overwrite:
         raise FileExistsError(
             "Mod folder already exists in repository. Use --f to overwrite.")
 
-    os.makedirs(mod.mod_path_en, exist_ok=overwrite)
-    os.makedirs(mod.mod_path_en, exist_ok=overwrite)
+    os.makedirs(mod.path_en, exist_ok=overwrite)
+    os.makedirs(mod.path_en, exist_ok=overwrite)
     mod.download_locale_en()
 
     print(f"Locale File downloaded for {mod.mod_name}"
-          "by {mod.owner}. Ready to translate!")
+          f"by {mod.owner}. Ready to translate!")
 
     return mod
 

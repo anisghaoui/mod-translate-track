@@ -10,9 +10,8 @@ class Mod:
         self.mod_name = res[-1]
         self.mod_owner = res[-2]
 
-        self.mod_path = Path("mods_locale/" + self.mod_name).resolve()
-        self.mod_path_en = self.mod_path / "locale/en"
-        self.mod_path_fr = self.mod_path / "locale/fr"
+        self.path = Path("mods_locale/" + self.mod_name).resolve()
+        self.path_en = self.path / "locale/en"
 
     def download_locale_en(self):
         # download the English version
@@ -22,7 +21,7 @@ class Mod:
             raise ConnectionError('Request failed. CHeck provided URL')
         config_str = req.content.decode(req.encoding)
 
-        with open(self.mod_path_en / "locale.cfg", "w", encoding=req.encoding) as f:
+        with open(self.path_en / "locale.cfg", "w", encoding=req.encoding) as f:
             f.write(config_str)
 
 
