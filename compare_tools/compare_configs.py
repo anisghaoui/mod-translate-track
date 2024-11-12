@@ -1,11 +1,8 @@
 import argparse
 from Mod import Mod
 import configparser
-from configparser import ConfigParser
-from configparser import ConfigParser
 
 
-def parse_config(path_or_string):
 def parse_config(path_or_string):
     cfg = configparser.ConfigParser()
     cfg.read(path_or_string)
@@ -50,9 +47,6 @@ def compare_configs(cfg_previous: str, cfg_new: str):
             }
 
     return diff_result
-    cfg.read(path_or_string)
-    return {section: dict(cfg.items(section))
-            for section in cfg.sections()}
 
 
 def compare_configs(cfg_previous: str, cfg_new: str):
