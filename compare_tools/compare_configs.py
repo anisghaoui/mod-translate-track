@@ -6,7 +6,6 @@ from configparser import ConfigParser
 
 
 def parse_config(path_or_string):
-def parse_config(path_or_string):
     cfg = configparser.ConfigParser()
     cfg.read(path_or_string)
     return {section: dict(cfg.items(section))
