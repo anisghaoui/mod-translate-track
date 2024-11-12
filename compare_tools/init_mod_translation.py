@@ -14,8 +14,7 @@ def init_mod(mod_repo_url, overwrite=False):
     os.makedirs(mod.path_en, exist_ok=overwrite)
     mod.download_locale_en()
 
-    print(f"Locale File downloaded for {mod.mod_name}"
-          f"by {mod.owner}. Ready to translate!")
+    print(f"Locale File downloaded for {mod.mod_name} by {mod.mod_owner}. Ready to translate!")
 
     return mod
 
