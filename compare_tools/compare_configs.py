@@ -34,8 +34,12 @@ def compare_configs(cfg_previous: str, cfg_new: str):
             key for key in cfg_previous[section].keys() & cfg_new[section].keys()
             if cfg_previous[section][key] != cfg_new[section][key]
         }
+        unmodified_keys = {
+            key for key in cfg_previous[section].keys() & cfg_new[section].keys()
+            if cfg_previous[section][key] == cfg_new[section][key]
+        }
         # If any exists, create a dict
-        if added_keys or removed_keys or modified_keys:
+        if added_keys or removed_keys or modified_keys or unmodified_keys:
             diff_result["modified_sections"][section] = {
                 "added_keys": {key: cfg_new[section][key] for key in added_keys},
                 "removed_keys": {key: cfg_previous[section][key] for key in removed_keys},
@@ -43,7 +47,8 @@ def compare_configs(cfg_previous: str, cfg_new: str):
                     key: {"from": cfg_previous[section][key],
                           "to": cfg_new[section][key]}
                     for key in modified_keys
-                }
+                },
+                "unmodified_keys": {key: cfg_previous[section][key] for key in unmodified_keys},
             }
 
     return diff_result
@@ -62,7 +67,7 @@ def compare_configs(cfg_previous: str, cfg_new: str):
     diff_result = {
         "added_sections": {section: cfg_new[section] for section in added_sections},
         "removed_sections": {section: cfg_previous[section] for section in removed_sections},
-        "modified_sections": {}
+        "common_sections": {}
     }
 
     # Compare keys within common sections
@@ -73,16 +78,22 @@ def compare_configs(cfg_previous: str, cfg_new: str):
             key for key in cfg_previous[section].keys() & cfg_new[section].keys()
             if cfg_previous[section][key] != cfg_new[section][key]
         }
+        unmodifed_keys = {
+            key for key in cfg_previous[section].keys() & cfg_new[section].keys()
+            if cfg_previous[section][key] == cfg_new[section][key]
+        }
+
         # If any exists, create a dict
-        if added_keys or removed_keys or modified_keys:
-            diff_result["modified_sections"][section] = {
+        if added_keys or removed_keys or modified_keys or unmodifed_keys:
+            diff_result["common_sections"][section] = {
                 "added_keys": {key: cfg_new[section][key] for key in added_keys},
                 "removed_keys": {key: cfg_previous[section][key] for key in removed_keys},
                 "modified_keys": {
                     key: {"from": cfg_previous[section][key],
                           "to": cfg_new[section][key]}
                     for key in modified_keys
-                }
+                },
+                "unmodifed_keys": {key: cfg_previous[section][key] for key in unmodifed_keys},
             }
 
     return diff_result
@@ -94,6 +105,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     mod = Mod(args.mod_url)
-    path_previous = mod.path_en + "/locale"
-    path_new = mod.download_locale_en(store=False)
-    compare_configs(path_previous, path_new)
+    path_previous = mod.path_en / "locale.cfg"
+    # path_new = mod.download_locale_en()
+    diff = compare_configs(path_previous, path_previous)
+    from pprint import pprint
+    pprint(diff)
