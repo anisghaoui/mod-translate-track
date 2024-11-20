@@ -106,7 +106,5 @@ if __name__ == "__main__":
 
     mod = Mod(args.mod_url)
     path_previous = mod.path_en / "locale.cfg"
-    # path_new = mod.download_locale_en()
-    diff = compare_configs(path_previous, path_previous)
-    from pprint import pprint
-    pprint(diff)
+    path_new = mod.download_locale_en()
+    diff = compare_configs(path_previous, path_new)
