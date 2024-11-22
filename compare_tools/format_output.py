@@ -6,7 +6,8 @@ from configparser import ConfigParser
 TEXT_DISPLAYED = {
     "added_keys": "These keys were added since last update",
     "removed_keys": "These keys were removed since last update",
-    "modified_keys": "These keys were updated since last update"
+    "modified_keys": "These keys were updated since last update",
+    "unmodified_keys": "These keys were not changed"
 }
 
 
@@ -70,7 +71,7 @@ if __name__ == "__main__":
 
     mod = Mod(args.mod_url)
     path_previous = mod.path_en / "locale.cfg"
-    path_new = mod.path_en / "locale copy.cfg"
+    path_new = mod.path / "locale/fr/locale.cfg"
     # path_new = mod.download_locale_en()
 
     diff = compare_configs(path_previous, path_new)
