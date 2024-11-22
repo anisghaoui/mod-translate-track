@@ -17,14 +17,16 @@ def compare_configs(cfg_previous: str, cfg_new: str):
     # Find sections or keys that have changed, were added, or removed
     cfg_prev_keys = cfg_previous.keys()
     cfg_new_keys = cfg_new.keys()
+
     added_sections = cfg_new_keys - cfg_prev_keys
     removed_sections = cfg_prev_keys - cfg_new_keys
     common_sections = [key for key in cfg_prev_keys if key in cfg_new_keys]
+
     # Store differences
     diff_result = {
         "added_sections": {section: cfg_new[section] for section in added_sections},
         "removed_sections": {section: cfg_previous[section] for section in removed_sections},
-        "modified_sections": {}
+        "modified_sections": {},
     }
 
     # Compare keys within common sections
