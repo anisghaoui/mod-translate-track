@@ -15,7 +15,8 @@ class Mod:
 
         self.path = Path("mods_locale/" + self.name)
         self.path_en = self.path / "locale/en"
-        
+        print(self.path)
+        print(self.path_en)
         if not os.path.exists(self.path_en):
             init_mod(self)
         print(f"Mod {self.name} by {self.owner} loaded!")
