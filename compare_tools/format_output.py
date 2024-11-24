@@ -2,6 +2,7 @@ import argparse
 from compare_tools.Mod import Mod
 from compare_tools.compare_configs import compare_configs
 from configparser import ConfigParser
+import os
 
 TEXT_DISPLAYED = {
     "added_keys": "These keys were added since last update",
@@ -21,6 +22,9 @@ def format_output(config_json, mod):
 
     # Write the file section by section starting with the common ones
     path = "output/" + mod.name + "/locale.cfg"
+    if not os.path.exists("output/" + mod.name):
+        os.makedirs("output/" + mod.name)
+    
     with open(path, "w+") as f:
         # added_sections
         for sections in "added_sections", "removed_sections":
