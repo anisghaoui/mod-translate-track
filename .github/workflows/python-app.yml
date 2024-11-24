@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
   schedule:
-      - cron: '0 20 * * 5'  # Triggers every Friday at 20:00 UTC
+    - cron: '0 20 * * 5'  # Triggers every Friday at 20:00 UTC
 
 jobs:
   read-mod-list:
@@ -24,10 +24,8 @@ jobs:
         run: |
           mods=$(cat mod_list.txt | jq -R -s -c 'split("\n") | map(select(. != ""))')
           echo "Parsed mods: $mods"
-          echo "mods=$mods" >> $GITHUB_OUTPUT   
-        # echo "::set-output name=mods::$mods"
-      
-          
+          echo "mods=$mods" >> $GITHUB_OUTPUT
+
   test-mods:
     needs: read-mod-list
     runs-on: ubuntu-latest
@@ -50,18 +48,28 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
+      # Extract the mod name (objectname) from the URL
       - name: Extract Mod Name
+        id: extract-mod-name
         run: |
-            # Extract name using sed
-            url="{{ matrix.mod }}"
-            mod_name=$(echo $url | sed 's:.*/::') 
-            echo "mod_name=$mod_name" >> $GITHUB_ENV 
+          url="${{ matrix.mod }}"  # Use matrix.mod as the URL
+          if [ -n "$url" ]; then
+            mod_name=$(echo $url | sed 's:.*/::')  # Extract the last segment after /
+            echo "Extracted mod name: $mod_name"
+            echo "mod_name=$mod_name" >> $GITHUB_ENV
+          else
+            echo "Error: URL is empty."
+            exit 1
+          fi
+
       # Test each mod
       - name: Checking Translation
-        run: |        
-          python mod_translate_track.py  ${{ matrix.mod }} ${{ vars.LANGUAGE }}
-          
-       # Collect artifacts from the output/ directory
+        run: |
+          echo "Running translation check for mod: ${{ env.mod_name }}"
+          python mod_translate_track.py "${{ matrix.mod }}" "${{ vars.LANGUAGE }}"
+
+      # Collect artifacts from the output/ directory
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
