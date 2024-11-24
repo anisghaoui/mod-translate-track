@@ -50,11 +50,12 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Extra Mod Name
+      - name: Extract Mod Name
         run: |
-            # Extract objectname using sed
-            mod-name=$(echo $url | sed 's:.*/::') 
-            echo "mod-name=$mod-name" >> $GITHUB_ENV 
+            # Extract name using sed
+            url="{{ matrix.mod }}"
+            mod_name=$(echo $url | sed 's:.*/::') 
+            echo "mod-name=$mod_name" >> $GITHUB_ENV 
       # Test each mod
       - name: Checking Translation
         run: |        
