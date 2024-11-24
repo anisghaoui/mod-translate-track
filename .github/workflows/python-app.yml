@@ -50,19 +50,19 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
-      - name: Debug Language Variable
-        run: echo "LANGUAGE is set to ${{ env.LANGUAGE }}"
-        
+      - name: Extra Mod Name
+        run: |
+            # Extract objectname using sed
+            mod-name=$(echo $url | sed 's:.*/::') 
+            mod-name=$mod-name" >> $GITHUB_ENV 
       # Test each mod
       - name: Checking Translation
-        run: |
+        run: |        
           python mod_translate_track.py  ${{ matrix.mod }} ${{ vars.LANGUAGE }}
-
-  
+          
        # Collect artifacts from the output/ directory
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: output-${${{ matrix.mod }}##*/}
-          path: output/${${{ matrix.mod }}##*/}/*
+          name: output-${{ env.mod-name }}
+          path: output/${{ env.mod-name }}/*
