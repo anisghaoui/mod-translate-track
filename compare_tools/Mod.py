@@ -13,7 +13,7 @@ class Mod:
         self.name = res[-1]
         self.owner = res[-2]
 
-        self.path = Path("mods_locale/" + self.name).resolve()
+        self.path = Path("mods_locale/" + self.name)
         self.path_en = self.path / "locale/en"
         
         if not os.path.exists(self.path_en):
