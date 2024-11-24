@@ -5,6 +5,8 @@ on:
     branches:
       - main
   pull_request:
+  schedule:
+      - cron: '0 20 * * 5'  # Triggers every Friday at 20:00 UTC
 
 jobs:
   read-mod-list:
