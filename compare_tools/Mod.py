@@ -1,6 +1,6 @@
 import requests
 from pathlib import Path
-
+import os
 RAW_PRE = "https://raw.githubusercontent.com/"
 
 
@@ -15,6 +15,9 @@ class Mod:
 
         self.path = Path("mods_locale/" + self.name).resolve()
         self.path_en = self.path / "locale/en"
+        
+        if not os.path.exists(self.path_en):
+            init_mod(self)
 
     def download_locale_en(self, store=True):
         # download the English version
@@ -30,6 +33,16 @@ class Mod:
         return config_str
 
 
+
+def init_mod(mod, overwrite=False):
+    if os.path.exists(mod.path) and not overwrite:
+        raise FileExistsError("Mod folder already exists in repository. Use --f to overwrite.")
+    print(f"Mod {self.name} by {self.owner} not intialised. Intialising...")
+    os.makedirs(mod.path_en, exist_ok=overwrite)
+    mod.download_locale_en()
+    print(f"Locale File downloaded for {mod.name} by {mod.owner}. Ready to translate!")
+    return mod
+
+
 if __name__ == "__main__":
     mod = Mod("https://github.com/Wip-Sama/Smart_Inserters")
-    mod.download_locale_en()
