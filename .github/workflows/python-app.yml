@@ -24,8 +24,8 @@ jobs:
         run: |
           mods=$(cat mod_list.txt | jq -R -s -c 'split("\n") | map(select(. != ""))')
           echo "Parsed mods: $mods"
-          echo "{mods}={$mods}" >> $GITHUB_OUTPUT
-      # echo "::set-output name=mods::$mods"
+          echo "mods=$mods" >> $GITHUB_OUTPUT   
+        # echo "::set-output name=mods::$mods"
       
           
   test-mods:
