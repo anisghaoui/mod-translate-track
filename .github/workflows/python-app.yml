@@ -5,6 +5,8 @@ on:
     branches:
       - main
   pull_request:
+  schedule:
+      - cron: '0 20 * * 5'  # Triggers every Friday at 20:00 UTC
 
 jobs:
   read-mod-list:
@@ -22,7 +24,9 @@ jobs:
         run: |
           mods=$(cat mod_list.txt | jq -R -s -c 'split("\n") | map(select(. != ""))')
           echo "Parsed mods: $mods"
-          echo "::set-output name=mods::$mods"
+          echo "{mods}={$mods}" >> $GITHUB_OUTPUT
+      # echo "::set-output name=mods::$mods"
+      
           
   test-mods:
     needs: read-mod-list
@@ -50,4 +54,12 @@ jobs:
       # Test each mod
       - name: Test Mod
         run: |
-          python mod_translate_track.py --mod-name ${{ matrix.mod }}
+          ls
+          python mod_translate_track.py  ${{ matrix.mod }} ${{ github.repository }}.${{ env.LANGUAGE }}
+  
+       # Collect artifacts from the output/ directory
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: output-${{ matrix.mod }}
+          path: output/${{ matrix.mod }}/*

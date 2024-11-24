@@ -1,6 +1,5 @@
-re
+regex
 requests
 pathlib
-os
 argparse
 configparser
