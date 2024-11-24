@@ -51,11 +51,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Debug Language Variable
+        run: echo "LANGUAGE is set to ${{ env.LANGUAGE }}"
+        
       # Test each mod
       - name: Test Mod
         run: |
-          ls
           python mod_translate_track.py  ${{ matrix.mod }} ${{ env.LANGUAGE }}
+
   
        # Collect artifacts from the output/ directory
       - name: Upload Artifacts
