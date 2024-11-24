@@ -10,18 +10,6 @@ jobs:
   read-mod-list:
     runs-on: ubuntu-latest
     outputs:
-name: Test Mods
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-
-jobs:
-  read-mod-list:
-    runs-on: ubuntu-latest
-    outputs:
       mods: ${{ steps.get-mods.outputs.mods }}
     steps:
       # Checkout the repo to access mod_list.txt
