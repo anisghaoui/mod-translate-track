@@ -54,7 +54,7 @@ jobs:
         run: |
             # Extract objectname using sed
             mod-name=$(echo $url | sed 's:.*/::') 
-            mod-name=$mod-name" >> $GITHUB_ENV 
+            echo "mod-name=$mod-name" >> $GITHUB_ENV 
       # Test each mod
       - name: Checking Translation
         run: |        
