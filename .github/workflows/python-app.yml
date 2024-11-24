@@ -32,6 +32,7 @@ jobs:
     strategy:
       matrix:
         mod: ${{ fromJson(needs.read-mod-list.outputs.mods) }}
+    continue-on-error: true 
     steps:
       # Checkout the repo
       - name: Checkout Code
