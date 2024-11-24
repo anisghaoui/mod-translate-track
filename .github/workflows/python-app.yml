@@ -1,0 +1,105 @@
+name: Test Mods
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  read-mod-list:
+    runs-on: ubuntu-latest
+    outputs:
+name: Test Mods
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  read-mod-list:
+    runs-on: ubuntu-latest
+    outputs:
+      mods: ${{ steps.get-mods.outputs.mods }}
+    steps:
+      # Checkout the repo to access mod_list.txt
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Read the mod_list.txt and convert to JSON
+      - name: Parse Mod List
+        id: get-mods
+        run: |
+          mods=$(cat mod_list.txt | jq -R -s -c 'split("\n") | map(select(. != ""))')
+          echo "Parsed mods: $mods"
+          echo "::set-output name=mods::$mods"
+
+  test-mods:
+    needs: read-mod-list
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        mod: ${{ fromJson(needs.read-mod-list.outputs.mods) }}
+    steps:
+      # Checkout the repo
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8' 
+
+      # Install dependencies
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Test each mod
+      - name: Test Mod
+        run: |
+          python your_script.py --mod-name ${{ matrix.mod }}
+    steps:
+      # Checkout the repo to access mod_list.txt
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Read the mod_list.txt and convert to JSON
+      - name: Parse Mod List
+        id: get-mods
+        run: |
+          mods=$(cat mod_list.txt | jq -R -s -c 'split("\n") | map(select(. != ""))')
+          echo "Parsed mods: $mods"
+          echo "::set-output name=mods::$mods"
+
+  test-mods:
+    needs: read-mod-list
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        mod: ${{ fromJson(needs.read-mod-list.outputs.mods) }}
+    steps:
+      # Checkout the repo
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x' # Replace with your required version
+
+      # Install dependencies
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Test each mod
+      - name: Test Mod
+        run: |
+          python mod_translate_track.py --mod-name ${{ matrix.mod }}
