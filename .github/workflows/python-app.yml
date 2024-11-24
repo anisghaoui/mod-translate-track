@@ -55,7 +55,7 @@ jobs:
         run: echo "LANGUAGE is set to ${{ env.LANGUAGE }}"
         
       # Test each mod
-      - name: Test Mod
+      - name: Checking Translation
         run: |
           python mod_translate_track.py  ${{ matrix.mod }} ${{ vars.LANGUAGE }}
 
@@ -64,5 +64,5 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: output-${{ matrix.mod }}
-          path: output/${{ matrix.mod }}/*
+          name: output-${{ matrix.mod }##*/}
+          path: output/${{ matrix.mod }##*/}/*
