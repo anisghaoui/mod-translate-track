@@ -1,29 +1,31 @@
 import re
 from compare_tools import Mod, compare_configs, format_output
+import argparse
 
-def dump_faulty_urls(urls):
-    for url in urls:
-        print(f"Faulty url detected: {url}. Rejecting track.")
+class InvalidURLException(Exception):
+    pass
 
-def check_urls(urls: list):
+def check_url(url:str):
     pattern = "https://github.com/*"
-    sanes = [url for url in urls if re.match(pattern, url)] 
-    dump_faulty_urls(set(urls) - set(sanes))
-    return sanes
+    if not re.match(pattern, url):
+        raise InvalidURLException(f"rejected url: {url}")
             
 
-def main(language:str):
-    with open("mod_list.txt", "r") as f:
-        urls = f.read().splitlines() 
-        urls = check_urls(urls)
-        
-        for url in urls:
-            print(f"checking mod at: {url}")
-            mod = Mod.Mod(url)
-            print(mod.path_en/"locale.cfg")
-            diff = compare_configs.compare_configs(mod.path_en/"locale.cfg", mod.path / "locale" / language/"locale.cfg")
-            format_output.format_output(diff,mod)
+def main(url:str,language:str):
+    check_url(url)
+    print(f"checking mod at: {url}")
+    mod = Mod.Mod(url)
+    print(mod.path_en/"locale.cfg")
+    diff = compare_configs.compare_configs(mod.path_en/"locale.cfg", mod.path / "locale" / language/"locale.cfg")
+    format_output.format_output(diff,mod)
 
 if __name__ == "__main__":
-    language = "fr"
-    main(language)
+    
+    parser = argparse.ArgumentParser()
+    parser.add_argument('mod_url')
+    parser.add_argument('language')
+    parser.add_argument('--f', "--overwrite",
+                        action="store_true", default=False)
+    args = parser.parse_args()
+
+    main(args.mod_url,args.language)
