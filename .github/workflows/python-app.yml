@@ -51,3 +51,10 @@ jobs:
       - name: Test Mod
         run: |
           python mod_translate_track.py --mod-name ${{ matrix.mod }}
+  
+       # Collect artifacts from the output/ directory
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: output-${{ matrix.mod }}
+          path: output/${{ matrix.mod }}/*
