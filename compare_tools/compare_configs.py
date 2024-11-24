@@ -1,11 +1,13 @@
 import argparse
-from Mod import Mod
+from compare_tools.Mod import Mod
 import configparser
-
+import os
 
 def parse_config(path_or_string):
     cfg = configparser.ConfigParser()
-    cfg.read(path_or_string)
+    if not os.path.exists(path_or_string):
+        raise FileNotFoundError(f"missing {path_or_string}")
+    cfg.read(path_or_string,encoding="utf-8")
     return {section: dict(cfg.items(section))
             for section in cfg.sections()}
 

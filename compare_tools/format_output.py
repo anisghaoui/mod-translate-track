@@ -1,6 +1,6 @@
 import argparse
-from Mod import Mod
-from compare_configs import compare_configs
+from compare_tools.Mod import Mod
+from compare_tools.compare_configs import compare_configs
 from configparser import ConfigParser
 
 TEXT_DISPLAYED = {

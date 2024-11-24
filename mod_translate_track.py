@@ -1,5 +1,5 @@
 import re
-from compare_tools import Mod
+from compare_tools import Mod, compare_configs, format_output
 
 def dump_faulty_urls(urls):
     for url in urls:
@@ -12,14 +12,18 @@ def check_urls(urls: list):
     return sanes
             
 
-def main():
+def main(language:str):
     with open("mod_list.txt", "r") as f:
         urls = f.read().splitlines() 
         urls = check_urls(urls)
         
         for url in urls:
+            print(f"checking mod at: {url}")
             mod = Mod.Mod(url)
-
+            print(mod.path_en/"locale.cfg")
+            diff = compare_configs.compare_configs(mod.path_en/"locale.cfg", mod.path / "locale" / language/"locale.cfg")
+            format_output.format_output(diff,mod)
 
 if __name__ == "__main__":
-    main()
+    language = "fr"
+    main(language)
