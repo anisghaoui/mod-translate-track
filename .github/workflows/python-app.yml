@@ -55,7 +55,7 @@ jobs:
       - name: Test Mod
         run: |
           ls
-          python mod_translate_track.py  ${{ matrix.mod }} ${{ github.repository }}.${{ env.LANGUAGE }}
+          python mod_translate_track.py  ${{ matrix.mod }} ${{ env.LANGUAGE }}
   
        # Collect artifacts from the output/ directory
       - name: Upload Artifacts
