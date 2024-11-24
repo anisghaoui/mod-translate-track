@@ -55,7 +55,7 @@ jobs:
             # Extract name using sed
             url="{{ matrix.mod }}"
             mod_name=$(echo $url | sed 's:.*/::') 
-            echo "mod-name=$mod_name" >> $GITHUB_ENV 
+            echo "mod_name=$mod_name" >> $GITHUB_ENV 
       # Test each mod
       - name: Checking Translation
         run: |        
@@ -65,5 +65,5 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: output-${{ env.mod-name }}
-          path: output/${{ env.mod-name }}/*
+          name: output-${{ env.mod_name }}
+          path: output/${{ env.mod_name }}/*
