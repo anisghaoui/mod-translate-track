@@ -3,11 +3,12 @@ from compare_tools.Mod import Mod
 import configparser
 import os
 
+
 def parse_config(path_or_string):
     cfg = configparser.ConfigParser()
     if not os.path.exists(path_or_string):
         raise FileNotFoundError(f"missing {path_or_string}")
-    cfg.read(path_or_string,encoding="utf-8")
+    cfg.read(path_or_string, encoding="utf-8")
     return {section: dict(cfg.items(section))
             for section in cfg.sections()}
 
@@ -55,7 +56,6 @@ def compare_configs(cfg_previous: str, cfg_new: str):
                 },
                 "unmodified_keys": {key: cfg_previous[section][key] for key in unmodified_keys},
             }
-
     return diff_result
 
 
