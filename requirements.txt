@@ -1,5 +1,1 @@
-regex
-requests
-pathlib
-argparse
-configparser
+Requests==2.32.3
