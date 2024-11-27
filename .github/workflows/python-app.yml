@@ -1,4 +1,4 @@
-name: Test Mods
+name: Translation check
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
   schedule:
-    - cron: '0 20 * * 5'  # Triggers every Friday at 20:00 UTC
+    - cron: "0 20 * * 5" # Triggers every Friday at 20:00 UTC
 
 jobs:
   read-mod-list:
@@ -32,7 +32,7 @@ jobs:
     strategy:
       matrix:
         mod: ${{ fromJson(needs.read-mod-list.outputs.mods) }}
-    continue-on-error: true 
+    continue-on-error: true
     steps:
       # Checkout the repo
       - name: Checkout Code
@@ -42,7 +42,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.8'
+          python-version: "3.8"
 
       # Install dependencies
       - name: Install Dependencies
