@@ -12,9 +12,11 @@ TEXT_DISPLAYED = {
 }
 
 
-def format_output(config_json, mod):
+def format_output(config_json, mod, language):
     config_out = ConfigParser()
     config_ret = ConfigParser()
+    config_lang = ConfigParser()
+    config_lang.read(mod.path / f"locale/{language}/locale.cfg")
 
     added_sections = config_json["added_sections"]
     removed_sections = config_json["removed_sections"]
@@ -24,7 +26,7 @@ def format_output(config_json, mod):
     path = "output/" + mod.name + "/locale.cfg"
     if not os.path.exists("output/" + mod.name):
         os.makedirs("output/" + mod.name)
-    
+
     with open(path, "w+") as f:
         # added_sections
         for sections in "added_sections", "removed_sections":
@@ -35,8 +37,11 @@ def format_output(config_json, mod):
                     config_ret.add_section(section_name)
 
                     for key, value in section.items():
-                        config_out.set(section_name, key, value)
-                        config_ret.set(section_name, key, value)
+                        config_out.set(section_name, key,
+                                       config_lang[section_name][kk])
+                        config_ret.set(section_name, key,
+                                       config_lang[section_name][kk])
+
                 config_out.write(f)
                 config_out = ConfigParser()
                 f.write("#######################################\n")
@@ -59,8 +64,10 @@ def format_output(config_json, mod):
                         if sub_key == "modified_keys":
                             # it is written as "from", "to" keys
                             vv = vv["to"]
-                        config_out.set(section_name, kk, vv)
-                        config_ret.set(section_name, kk, vv)
+                        config_out.set(section_name, kk,
+                                       config_lang[section_name][kk])
+                        config_ret.set(section_name, kk,
+                                       config_lang[section_name][kk])
 
             config_out.write(f)
             config_out = ConfigParser()
@@ -76,7 +83,6 @@ if __name__ == "__main__":
     mod = Mod(args.mod_url)
     path_previous = mod.path_en / "locale.cfg"
     path_new = mod.path / "locale/fr/locale.cfg"
-    # path_new = mod.download_locale_en()
 
     diff = compare_configs(path_previous, path_new)
     format_output(diff, mod)

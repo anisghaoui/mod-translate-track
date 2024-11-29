@@ -19,8 +19,7 @@ def main(url: str, language: str):
     mod = Mod.Mod(url)
     diff = compare_configs.compare_configs(
         mod.path_en/"locale.cfg", mod)
-    # TODO: I am using local EN vs Language. I need to use remote EN vs locale EN AND output it in LANGUAGE
-    format_output.format_output(diff, mod)
+    format_output.format_output(diff, mod, language)
 
 
 if __name__ == "__main__":

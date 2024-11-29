@@ -24,7 +24,6 @@ def compare_configs(cfg_previous: str, cfg_new: str):
     elif type(cfg_new) is Mod:
         cfg_new = cfg_new.download_locale_en(store=False)
         cfg_new = parse_config(cfg_new, is_file=False)
-        print(cfg_new)
 
     # Find sections or keys that have changed, were added, or removed
 
