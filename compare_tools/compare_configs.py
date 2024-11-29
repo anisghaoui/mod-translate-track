@@ -4,20 +4,30 @@ import configparser
 import os
 
 
-def parse_config(path_or_string):
+def parse_config(path_or_string, is_file=True):
     cfg = configparser.ConfigParser()
-    if not os.path.exists(path_or_string):
-        raise FileNotFoundError(f"missing {path_or_string}")
-    cfg.read(path_or_string, encoding="utf-8")
+    if is_file:
+        if not os.path.exists(path_or_string):
+            raise FileNotFoundError(f"missing {path_or_string}")
+        cfg.read(path_or_string, encoding="utf-8")
+    else:
+        cfg.read_string(path_or_string)
+
     return {section: dict(cfg.items(section))
             for section in cfg.sections()}
 
 
 def compare_configs(cfg_previous: str, cfg_new: str):
     cfg_previous = parse_config(cfg_previous)
-    cfg_new = parse_config(cfg_new)
+    if type(cfg_new) is str:
+        cfg_new = parse_config(cfg_new)
+    elif type(cfg_new) is Mod:
+        cfg_new = cfg_new.download_locale_en(store=False)
+        cfg_new = parse_config(cfg_new, is_file=False)
+        print(cfg_new)
 
     # Find sections or keys that have changed, were added, or removed
+
     cfg_prev_keys = cfg_previous.keys()
     cfg_new_keys = cfg_new.keys()
 

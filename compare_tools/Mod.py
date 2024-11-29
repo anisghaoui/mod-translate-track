@@ -19,8 +19,6 @@ class Mod:
             init_mod(self)
         print(f"Mod {self.name} by {self.owner} loaded!")
 
-        
-
     def download_locale_en(self, store=True):
         # download the English version
         req = requests.get(
@@ -34,13 +32,16 @@ class Mod:
                 f.write(config_str)
         return config_str
 
+
 def init_mod(mod, overwrite=False):
     if os.path.exists(mod.path) and not overwrite:
-        raise FileExistsError("Mod folder already exists in repository. Use --f to overwrite.")
+        raise FileExistsError(
+            "Mod folder already exists in repository. Use --f to overwrite.")
     print(f"Mod {mod.name} by {mod.owner} not intialised. Intialising...")
     os.makedirs(mod.path_en, exist_ok=overwrite)
     mod.download_locale_en()
-    print(f"Locale File downloaded for {mod.name} by {mod.owner}. Mod intialised!")
+    print(
+        f"Locale File downloaded for {mod.name} by {mod.owner}. Mod intialised!")
     return mod
 
 
