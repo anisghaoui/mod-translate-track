@@ -12,7 +12,7 @@ def update_mods():
             mod = Mod.Mod(url)
             mod.download_locale_en()
 
-        repo.index.add("*")
+        repo.index.add("mods_locale/*")
         repo.index.commit("update mod En locale")
 
 
