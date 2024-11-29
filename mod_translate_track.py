@@ -1,20 +1,9 @@
-import re
-from compare_tools import Mod, compare_configs, format_output
+from compare_tools import Mod, compare_configs, format_output, check_url
 import argparse
 
 
-class InvalidURLException(Exception):
-    pass
-
-
-def check_url(url: str):
-    pattern = "https://github.com/*"
-    if not re.match(pattern, url):
-        raise InvalidURLException(f"rejected url: {url}")
-
-
 def main(url: str, language: str):
-    check_url(url)
+    check_url.check_url(url)
     print(f"checking mod at: {url}")
     mod = Mod.Mod(url)
     diff = compare_configs.compare_configs(
